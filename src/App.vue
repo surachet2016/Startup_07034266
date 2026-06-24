@@ -1,5 +1,10 @@
+<script setup>
+import NavBar from './components/NavBar.vue'
+</script>
+
 <template>
-  <div>
-    <p style="padding: 2rem">Course website — scaffolded</p>
-  </div>
+  <NavBar />
+  <main>
+    <p style="padding: 2rem">Content coming soon…</p>
+  </main>
 </template>
