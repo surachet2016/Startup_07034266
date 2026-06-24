@@ -26,3 +26,19 @@ body {
   line-height: 1.6;
 }
 
+@media (max-width: 640px) {
+  .week-header {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .week-badge {
+    min-width: unset;
+    align-self: flex-start;
+  }
+
+  .slides-grid,
+  .activities-grid {
+    grid-template-columns: 1fr;
+  }
+}
