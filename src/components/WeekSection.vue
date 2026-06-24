@@ -9,6 +9,10 @@ defineProps({
 function slideFile(weekNum) {
   return `/slides/Week${String(weekNum).padStart(2, '0')}_Startup.pptx`
 }
+
+function slideFileName(weekNum) {
+  return slideFile(weekNum).split('/').pop()
+}
 </script>
 
 <template>
@@ -43,14 +47,14 @@ function slideFile(weekNum) {
     <div class="slides-grid">
       <div v-for="(slide, i) in week.slides" :key="i" class="slide-card">
         <div class="slide-card-header">{{ slide.title }}</div>
-        <ul class="slide-bullets">
+        <ul class="slide-bullets" role="list">
           <li
             v-for="(b, j) in slide.bullets"
             :key="j"
             :class="`bullet-${b.type}`"
           >{{ b.text }}</li>
         </ul>
-        <p v-if="slide.note" class="slide-note">💡 {{ slide.note }}</p>
+        <p v-if="slide.note" class="slide-note"><span aria-hidden="true">💡</span> {{ slide.note }}</p>
       </div>
     </div>
 
@@ -65,7 +69,7 @@ function slideFile(weekNum) {
 
     <!-- Takeaways -->
     <h3 class="section-sub-title">Key Takeaways</h3>
-    <ul class="takeaway-list">
+    <ul class="takeaway-list" role="list">
       <li v-for="(t, i) in week.takeaways" :key="i" class="takeaway-item">
         <span class="checkmark">✓</span> {{ t }}
       </li>
@@ -77,10 +81,10 @@ function slideFile(weekNum) {
     <!-- Download button -->
     <a
       :href="slideFile(week.week)"
-      :download="`Week${String(week.week).padStart(2,'0')}_Startup.pptx`"
+      :download="slideFileName(week.week)"
       class="download-btn"
     >
-      ⬇ ดาวน์โหลดสไลด์ Week {{ week.week }} (.pptx)
+      <span aria-hidden="true">⬇</span> ดาวน์โหลดสไลด์ Week {{ week.week }} (.pptx)
     </a>
 
   </section>
@@ -274,7 +278,8 @@ function slideFile(weekNum) {
 
 .next-week {
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text);
+  opacity: 0.6;
   margin: 1rem 0 1.5rem;
 }
 
