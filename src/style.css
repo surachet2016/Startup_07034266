@@ -1,0 +1,32 @@
+:root {
+  --bg: #ffffff;
+  --accent: #00b4d8;
+  --highlight: #ffa700;
+  --text: #0d1b2a;
+  --card: #f0f8ff;
+  --light: #cae9ff;
+  --card-border: #d0e8f5;
+  --navy-dark: #1a2f45;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Sarabun', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
