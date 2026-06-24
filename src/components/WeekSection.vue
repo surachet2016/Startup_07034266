@@ -76,7 +76,7 @@ function slideFileName(weekNum) {
     </ul>
 
     <!-- Next week preview -->
-    <p class="next-week">สัปดาห์หน้า: <strong>{{ week.next_week }}</strong></p>
+    <p v-if="week.week < 8" class="next-week">สัปดาห์หน้า: <strong>{{ week.next_week }}</strong></p>
 
     <!-- Download button -->
     <a
@@ -298,7 +298,7 @@ function slideFileName(weekNum) {
 }
 
 .download-btn:hover {
-  background: #009bb8;
+  background: color-mix(in srgb, var(--accent) 85%, black);
   transform: translateY(-1px);
 }
 </style>
