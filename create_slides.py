@@ -159,13 +159,13 @@ def add_activity_slide(prs, week_num, activities):
     add_text(slide, "อาจารย์ ดร.สุรเชษฐ์ สังขพันธ์  |  คณะวิทยาการจัดการ  |  มหาวิทยาลัยนราธิวาสราชนครินทร์",
              Inches(0.3), H - Inches(0.35), W - Inches(0.6), Inches(0.35), 10, C_LIGHT, align=PP_ALIGN.CENTER)
 
-def add_summary_slide(prs, week_num, takeaways, next_week):
+def add_summary_slide(prs, week_num, takeaways, next_week, final=False):
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     set_bg(slide, C_BG)
     W, H = SLIDE_W, SLIDE_H
 
     add_rect(slide, 0, 0, W, Inches(0.07), C_ACCENT)
-    add_text(slide, "สรุปและการบ้าน", Inches(0.5), Inches(0.2), Inches(8), Inches(0.9), 28, C_WHITE, bold=True)
+    add_text(slide, "สรุปและการบ้าน" if not final else "สรุปรายวิชา", Inches(0.5), Inches(0.2), Inches(8), Inches(0.9), 28, C_WHITE, bold=True)
     add_rect(slide, Inches(0.4), Inches(1.1), Inches(3.5), Inches(0.04), C_ACCENT)
 
     # Takeaways box
@@ -175,17 +175,23 @@ def add_summary_slide(prs, week_num, takeaways, next_week):
     ta_text = "\n".join([f"✓  {t}" for t in takeaways])
     add_text(slide, ta_text, Inches(0.6), Inches(1.95), Inches(6.1), Inches(4.8), 14, C_LIGHT)
 
-    # Next week box
+    # Next week box (or closing message on the final week)
     add_rect(slide, Inches(7.0), Inches(1.25), Inches(5.8), Inches(2.6), C_CARD)
     add_rect(slide, Inches(7.0), Inches(1.25), Inches(5.8), Inches(0.08), C_ACCENT2)
-    add_text(slide, f"สัปดาห์หน้า: {next_week}", Inches(7.1), Inches(1.35), Inches(5.6), Inches(2.4), 15, C_ACCENT2, bold=True)
+    box1_label = "ก้าวต่อไป" if final else "สัปดาห์หน้า"
+    add_text(slide, f"{box1_label}: {next_week}", Inches(7.1), Inches(1.35), Inches(5.6), Inches(2.4), 15, C_ACCENT2, bold=True)
 
-    # Homework box
+    # Homework box (or course wrap-up on the final week)
     add_rect(slide, Inches(7.0), Inches(4.05), Inches(5.8), Inches(2.9), C_CARD)
     add_rect(slide, Inches(7.0), Inches(4.05), Inches(5.8), Inches(0.08), RGBColor(0x06, 0xD6, 0xA0))
-    add_text(slide, "การบ้าน / SDL", Inches(7.1), Inches(4.15), Inches(5.6), Inches(0.5), 16, RGBColor(0x06, 0xD6, 0xA0), bold=True)
-    add_text(slide, f"ทบทวนเนื้อหาสัปดาห์นี้\nเตรียมพร้อมสำหรับ: {next_week}\nศึกษาด้วยตนเอง 5 ชั่วโมง",
-             Inches(7.1), Inches(4.7), Inches(5.6), Inches(2.1), 13, C_LIGHT)
+    if final:
+        add_text(slide, "สิ่งที่ต้องส่ง", Inches(7.1), Inches(4.15), Inches(5.6), Inches(0.5), 16, RGBColor(0x06, 0xD6, 0xA0), bold=True)
+        add_text(slide, "ส่ง Personal Action Plan\nส่งแบบประเมินรายวิชาและอาจารย์\nขอบคุณที่ร่วมเดินทางตลอดภาคเรียน 🎓",
+                 Inches(7.1), Inches(4.7), Inches(5.6), Inches(2.1), 13, C_LIGHT)
+    else:
+        add_text(slide, "การบ้าน / SDL", Inches(7.1), Inches(4.15), Inches(5.6), Inches(0.5), 16, RGBColor(0x06, 0xD6, 0xA0), bold=True)
+        add_text(slide, f"ทบทวนเนื้อหาสัปดาห์นี้\nเตรียมพร้อมสำหรับ: {next_week}\nศึกษาด้วยตนเอง 5 ชั่วโมง",
+                 Inches(7.1), Inches(4.7), Inches(5.6), Inches(2.1), 13, C_LIGHT)
 
     add_rect(slide, 0, H - Inches(0.35), W, Inches(0.35), C_CARD)
     add_text(slide, "อาจารย์ ดร.สุรเชษฐ์ สังขพันธ์  |  คณะวิทยาการจัดการ  |  มหาวิทยาลัยนราธิวาสราชนครินทร์",
@@ -661,6 +667,348 @@ weeks = [
         ],
         "next_week": "กลยุทธ์การตลาดดิจิทัลและการเติบโตของธุรกิจ (Growth)",
     },
+    # ---- WEEK 9 ----
+    {
+        "week": 9,
+        "title_th": "กลยุทธ์การตลาดดิจิทัลและการเติบโตของธุรกิจ (Growth)",
+        "title_en": "Digital Marketing Strategy & Growth",
+        "clos": "CLO3: จัดทำและนำเสนอแผนธุรกิจและกลยุทธ์การจัดการ",
+        "method": "บรรยาย\nอภิปราย\nกรณีศึกษา",
+        "media": "สไลด์\nกรณีศึกษา",
+        "slides": [
+            ("Digital Marketing สำหรับ Startup", [
+                "#ทำไม Digital Marketing สำคัญกับ Startup",
+                "ต้นทุนต่ำกว่าการตลาดแบบดั้งเดิม วัดผลได้ทันที",
+                "เข้าถึงกลุ่มเป้าหมายเฉพาะกลุ่มได้แม่นยำ",
+                "#ช่องทางหลัก",
+                "Social Media Marketing (Facebook, IG, TikTok)",
+                "Search Engine Marketing (SEO/SEM)",
+                "Email Marketing & Influencer Marketing",
+                "#กรณีศึกษา: Wongnai",
+                "สร้าง Community รีวิวร้านอาหาร ก่อนขยายสู่ Ads/Delivery",
+            ], "เลือกช่องทางที่ลูกค้าเป้าหมายอยู่ ไม่ใช่ทุกช่องทาง"),
+            ("Brand Identity และ Content Marketing", [
+                "#Brand Identity คืออะไร",
+                "ตัวตนของแบรนด์: โลโก้ สี Tone of Voice",
+                "ความสอดคล้องสร้างความน่าเชื่อถือ",
+                "#Content Marketing Pillars",
+                "Educate / Entertain / Inspire / Convert",
+                "#กรณีศึกษา: Instagram",
+                "สร้าง Brand ผ่าน Visual-first Content ตั้งแต่วันแรก",
+                "#เครื่องมือวัดผล Content",
+                "Engagement Rate, Reach, Conversion Rate",
+            ]),
+            ("AARRR Growth Funnel (Pirate Metrics)", [
+                "#AARRR Framework (Dave McClure)",
+                "Acquisition: ลูกค้ามาจากไหน",
+                "Activation: ลูกค้าได้ประสบการณ์ที่ดีครั้งแรกไหม",
+                "Retention: ลูกค้ากลับมาใช้ซ้ำไหม",
+                "Revenue: ลูกค้าจ่ายเงินไหม",
+                "Referral: ลูกค้าบอกต่อไหม",
+                "#กรณีศึกษา: Uber Referral Program",
+                "ให้ Credit ทั้งผู้แนะนำและผู้ถูกแนะนำ → Growth Loop",
+            ], "Growth Hacking คือการทดลองอย่างเป็นระบบ ไม่ใช่เวทมนตร์"),
+        ],
+        "activities": [
+            ("วิเคราะห์ Brand", "เลือก Startup 1 ราย\nวิเคราะห์ Brand Identity\nและช่องทาง Digital Marketing\nที่ใช้"),
+            ("ออกแบบ Content Plan", "กลุ่มออกแบบ\nContent Calendar 1 สัปดาห์\nสำหรับ Startup ของตน\n(3 โพสต์ + เป้าหมาย)"),
+            ("AARRR Mapping", "กลุ่มระบุกลยุทธ์\nในแต่ละขั้นของ AARRR\nสำหรับ Startup ตนเอง\nนำเสนอ 3 นาที"),
+        ],
+        "takeaways": [
+            "เข้าใจช่องทาง Digital Marketing ที่เหมาะกับ Startup",
+            "ออกแบบ Brand Identity และ Content Marketing เบื้องต้นได้",
+            "ใช้ AARRR Framework วางกลยุทธ์การเติบโต",
+            "เห็นตัวอย่างจริงจาก Wongnai, Instagram, Uber",
+        ],
+        "next_week": "การใช้ปัญญาประดิษฐ์และเครื่องมือดิจิทัลในการสร้างสื่อและพัฒนาธุรกิจ",
+    },
+    # ---- WEEK 10 ----
+    {
+        "week": 10,
+        "title_th": "การใช้ปัญญาประดิษฐ์และเครื่องมือดิจิทัลในการสร้างสื่อและพัฒนาธุรกิจ",
+        "title_en": "AI & Digital Tools for Content Creation and Business Development",
+        "clos": "CLO4: ผลิตสื่อและชิ้นงานนำเสนอแผนธุรกิจโดยใช้เครื่องมือดิจิทัลและปัญญาประดิษฐ์",
+        "method": "บรรยาย\nเวิร์กชอป",
+        "media": "สไลด์\nใบงาน",
+        "slides": [
+            ("AI สำหรับ Startup ยุคใหม่", [
+                "#ทำไม Startup ต้องใช้ AI",
+                "ลดต้นทุน เพิ่มความเร็วในการทำงาน แข่งกับธุรกิจใหญ่ได้",
+                "#ประเภทเครื่องมือ AI ที่ใช้บ่อย",
+                "Generative AI: ChatGPT, Claude, Gemini",
+                "Design AI: Canva AI, Midjourney",
+                "Video/Voice AI: CapCut AI, ElevenLabs",
+            ], "AI คือผู้ช่วย ไม่ใช่ผู้ตัดสินใจแทนผู้ประกอบการ"),
+            ("ใช้ AI สร้างสื่อธุรกิจ", [
+                "#Content Creation ด้วย AI",
+                "เขียน Caption, Script, Blog ด้วย Prompt ที่ดี",
+                "ออกแบบโลโก้/โปสเตอร์ด้วย Canva AI",
+                "#หลักการเขียน Prompt ที่ดี",
+                "ระบุ Context, Format, Tone, ตัวอย่าง",
+                "#ข้อควรระวัง",
+                "ตรวจสอบความถูกต้อง (Hallucination)",
+                "ลิขสิทธิ์และความเป็นต้นฉบับ",
+            ]),
+            ("AI ในการพัฒนาธุรกิจ", [
+                "#วิเคราะห์ข้อมูลด้วย AI",
+                "สรุปผล Survey, วิเคราะห์ Feedback ลูกค้า",
+                "#AI Chatbot สำหรับลูกค้า",
+                "ตอบคำถามอัตโนมัติ ลดต้นทุน Customer Service",
+                "#เครื่องมือ No-Code/AI สร้าง MVP เร็วขึ้น",
+                "Bubble, Lovable, Replit Agent",
+            ], "ใช้ AI เร่งความเร็ว แต่ Core Value ต้องมาจากความเข้าใจลูกค้าจริง"),
+        ],
+        "activities": [
+            ("Prompt Workshop", "ฝึกเขียน Prompt\nสร้าง Caption โฆษณา\nสำหรับ Startup ของกลุ่ม\nด้วย ChatGPT/Claude"),
+            ("AI Design", "ใช้ Canva AI\nออกแบบโลโก้/โปสเตอร์\nสำหรับแบรนด์ของกลุ่ม"),
+            ("นำเสนอผลงาน", "นำเสนอสื่อที่สร้าง\nด้วย AI 1 ชิ้น\nพร้อมอธิบาย Prompt\nที่ใช้"),
+        ],
+        "takeaways": [
+            "รู้จักเครื่องมือ AI หลักสำหรับสร้างสื่อและพัฒนาธุรกิจ",
+            "เขียน Prompt ที่มีประสิทธิภาพได้",
+            "ใช้ AI สร้างสื่อนำเสนอ/โลโก้/Content ได้จริง",
+            "เข้าใจข้อจำกัดและข้อควรระวังในการใช้ AI",
+        ],
+        "next_week": "การจัดทำแผนธุรกิจ (Business Plan)",
+    },
+    # ---- WEEK 11 ----
+    {
+        "week": 11,
+        "title_th": "การจัดทำแผนธุรกิจ (Business Plan)",
+        "title_en": "Business Plan Development",
+        "clos": "CLO3: จัดทำและนำเสนอแผนธุรกิจและกลยุทธ์การจัดการ\nCLO4: ผลิตสื่อและชิ้นงานนำเสนอแผนธุรกิจ",
+        "method": "ปฏิบัติการกลุ่ม\nระดมสมอง",
+        "media": "ใบงาน\nเครื่องมือระดมสมอง",
+        "slides": [
+            ("โครงสร้างแผนธุรกิจ (Business Plan)", [
+                "#องค์ประกอบหลักของ Business Plan",
+                "Executive Summary, Problem/Solution, Market Analysis",
+                "Business Model, Marketing Plan, Financial Plan, Team",
+                "#ความยาวที่เหมาะสม",
+                "10-20 หน้า ไม่ใช่ 100 หน้า — นักลงทุนอ่านไม่ทัน",
+            ], "Business Plan ที่ดีคือเอกสารที่ 'มีชีวิต' ปรับปรุงได้เสมอ"),
+            ("Startup Funding Stages — เส้นทางเงินทุน", [
+                "#Pre-Seed",
+                "ไอเดียและทีม ใช้เงินส่วนตัว/FFF ทดสอบสมมติฐาน",
+                "#Seed",
+                "มี MVP/Early Traction ระดมจาก Angel/Seed VC",
+                "#Series A",
+                "Product-Market Fit ชัดเจน ขยายทีมและตลาด",
+                "#Series B/C และต่อไป",
+                "Scale ธุรกิจ ขยายต่างประเทศ/ควบรวมกิจการ",
+                "#สิ่งที่นักลงทุนแต่ละระยะมองหา",
+                "Pre-Seed: ทีมและไอเดีย / Series A+: ตัวเลขและการเติบโต",
+            ], "อย่าระดมทุนเกินความจำเป็นของระยะธุรกิจตนเอง (Don't over-raise)"),
+            ("เขียน Business Plan ให้น่าสนใจ", [
+                "#เล่าเรื่องด้วย Storytelling",
+                "เริ่มจาก Pain Point ที่คนเข้าใจง่าย",
+                "#ใส่ตัวเลขที่ตรวจสอบได้",
+                "อ้างอิงแหล่งข้อมูลจริง ไม่ประมาณการลอยๆ",
+                "#กรณีศึกษา: Airbnb",
+                "เริ่มจาก Business Plan เล็กๆ เช่าที่นอนลม สู่ Unicorn",
+            ], "นักลงทุนซื้อ 'ทีมที่แก้ปัญหาได้' มากกว่า 'ไอเดียที่สมบูรณ์แบบ'"),
+        ],
+        "activities": [
+            ("ระดมสมอง", "กลุ่มร่าง Outline\nBusiness Plan 8 หัวข้อ\nโดยใช้ข้อมูลจาก\nสัปดาห์ที่ผ่านมา"),
+            ("กำหนด Funding Stage", "วิเคราะห์ว่า Startup\nของกลุ่มอยู่ระยะใด\n(Pre-Seed/Seed)\nและควรระดมทุนเท่าไหร่"),
+            ("Peer Review", "แลกเปลี่ยน Outline\nกับกลุ่มอื่น\nให้ Feedback\nเพื่อปรับปรุงก่อนสัปดาห์ Pitch"),
+        ],
+        "takeaways": [
+            "เข้าใจโครงสร้างและองค์ประกอบของ Business Plan",
+            "รู้จักเส้นทางเงินทุน Startup ตั้งแต่ Pre-Seed ถึง Series C",
+            "ระบุระยะการระดมทุนที่เหมาะกับ Startup ของกลุ่มได้",
+            "ร่าง Business Plan Outline ของกลุ่มตนเองได้",
+        ],
+        "next_week": "การพัฒนาสื่อนำเสนอ (Pitch Deck) และเทคนิคการนำเสนอแผนธุรกิจ",
+    },
+    # ---- WEEK 12 ----
+    {
+        "week": 12,
+        "title_th": "การพัฒนาสื่อนำเสนอ (Pitch Deck) และเทคนิคการนำเสนอแผนธุรกิจ",
+        "title_en": "Pitch Deck Development & Investor Presentation Techniques",
+        "clos": "CLO4: ผลิตสื่อและชิ้นงานนำเสนอแผนธุรกิจโดยใช้เครื่องมือดิจิทัลและปัญญาประดิษฐ์\nCLO5: ทำงานร่วมกับผู้อื่นในกลุ่ม",
+        "method": "บรรยาย\nปฏิบัติ",
+        "media": "สไลด์\nแบบสำรวจ",
+        "slides": [
+            ("โครงสร้าง Pitch Deck มาตรฐาน", [
+                "#10-12 สไลด์ที่นักลงทุนอยากเห็น",
+                "Cover, Problem, Solution, Market Size",
+                "Business Model, Traction, Competition",
+                "Team, Financials, Funding Ask, Vision",
+                "#กรณีศึกษา: Airbnb Pitch Deck (2008)",
+                "เรียบง่าย ใช้ข้อมูลจริง สื่อสารตรงประเด็น",
+            ], "Pitch Deck ที่ดี อ่านได้ใน 3 นาทีโดยไม่ต้องมีคนอธิบาย"),
+            ("Investor Relations — สื่อสารกับนักลงทุน", [
+                "#นักลงทุนประเภทต่างๆ",
+                "Angel Investor, VC, Government Grant, Crowdfunding",
+                "#สิ่งที่นักลงทุนถามบ่อย",
+                "'ทำไมต้องเป็นทีมคุณ?' 'Traction ตอนนี้เป็นอย่างไร?'",
+                "#Cap Table และ Equity เบื้องต้น",
+                "สัดส่วนการถือหุ้นเปลี่ยนแปลงตามรอบระดมทุน",
+                "#หลัง Pitch: Due Diligence และ Term Sheet",
+                "ขั้นตอนก่อนปิดดีลจริง",
+            ], "ความสัมพันธ์กับนักลงทุนไม่จบที่ Pitch — ต้อง Update สม่ำเสมอ"),
+            ("เทคนิคการนำเสนอ (Presentation Skills)", [
+                "#Storytelling Structure",
+                "Hook → Problem → Solution → Proof → Ask",
+                "#Delivery Techniques",
+                "น้ำเสียง ภาษากาย การสบตา จับเวลา",
+                "#รับมือคำถาม Q&A",
+                "ตอบตรงประเด็น ยอมรับถ้าไม่รู้ พร้อม Follow-up",
+                "#ฝึกซ้อมก่อนนำเสนอจริง",
+                "Practice Pitch กับเพื่อนกลุ่มอื่น",
+            ], "การฝึกซ้อมพูด 10 ครั้ง สำคัญกว่าสไลด์สวย 1 ชุด"),
+        ],
+        "activities": [
+            ("สร้าง Pitch Deck", "กลุ่มสร้าง Pitch Deck\n10-12 สไลด์\nด้วย Canva/PowerPoint\nตามโครงสร้างมาตรฐาน"),
+            ("ฝึกพูด Pitch", "ฝึกพูด Pitch\nภายในกลุ่ม จับเวลา 3 นาที\nรับ Feedback จากเพื่อน"),
+            ("Mock Q&A", "จำลองสถานการณ์\nนักลงทุนถามคำถาม\nฝึกตอบกระชับ\nและมั่นใจ"),
+        ],
+        "takeaways": [
+            "สร้าง Pitch Deck ตามโครงสร้างมาตรฐานสากลได้",
+            "เข้าใจกระบวนการ Investor Relations และ Cap Table เบื้องต้น",
+            "ฝึกเทคนิคการนำเสนอและการตอบคำถาม Q&A",
+            "พร้อมสำหรับการนำเสนอโครงงานจริงในสัปดาห์ถัดไป",
+        ],
+        "next_week": "ปฏิบัติการกลุ่ม: พัฒนาโครงงานธุรกิจเริ่มต้น และจรรยาบรรณในการทำงาน",
+    },
+    # ---- WEEK 13 ----
+    {
+        "week": 13,
+        "title_th": "ปฏิบัติการกลุ่ม: พัฒนาโครงงานธุรกิจเริ่มต้น และจรรยาบรรณในการทำงาน",
+        "title_en": "Group Workshop: Startup Project Development & Professional Ethics",
+        "clos": "CLO1: แสดงพฤติกรรมซื่อสัตย์ มีวินัย ตรงต่อเวลา\nCLO5: ทำงานร่วมกับผู้อื่นในกลุ่ม",
+        "method": "เวิร์กชอป",
+        "media": "BMC Template",
+        "slides": [
+            ("Workshop: ปรับปรุงโครงงานธุรกิจ", [
+                "#ทบทวนและขัดเกลา BMC, แผนธุรกิจ, Pitch Deck",
+                "รวมข้อมูล Feedback จากสัปดาห์ที่ผ่านมา",
+                "#จุดที่กลุ่มมักพลาด",
+                "ตัวเลขการเงินไม่สมเหตุสมผล / ไม่มี Traction",
+                "Value Proposition ไม่ชัดเจน",
+            ]),
+            ("การจดทะเบียนธุรกิจและกฎระเบียบที่เกี่ยวข้อง", [
+                "#รูปแบบธุรกิจที่จดทะเบียนได้",
+                "บุคคลธรรมดา / ห้างหุ้นส่วน / บริษัทจำกัด",
+                "#หน่วยงานสนับสนุน Startup ภาครัฐ",
+                "NIA, depa, สสว., BOI (สิทธิประโยชน์ทางภาษี)",
+                "#กฎระเบียบที่ต้องรู้",
+                "PDPA (พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล)",
+                "ทรัพย์สินทางปัญญา (เครื่องหมายการค้า/สิทธิบัตร)",
+            ], "การจดทะเบียนถูกต้องตั้งแต่ต้น ป้องกันปัญหาใหญ่ในอนาคต"),
+            ("จรรยาบรรณผู้ประกอบการ (Business Ethics)", [
+                "#ความซื่อสัตย์ต่อลูกค้าและนักลงทุน",
+                "ไม่กล่าวเกินจริงเรื่อง Traction/ตัวเลข",
+                "#ความรับผิดชอบต่อสังคมและสิ่งแวดล้อม (ESG)",
+                "#การทำงานเป็นทีมอย่างมีวินัย",
+                "แบ่งงานเป็นธรรม ตรงต่อเวลา ให้เครดิตเพื่อนร่วมทีม",
+            ], "ชื่อเสียงของผู้ประกอบการสร้างยากแต่เสียง่าย — ซื่อสัตย์เสมอ"),
+        ],
+        "activities": [
+            ("Workshop ปรับปรุง", "กลุ่มปรับปรุง\nBMC/แผนธุรกิจ/Pitch Deck\nตาม Feedback ที่ได้รับ"),
+            ("ตรวจสอบกฎระเบียบ", "ตรวจสอบว่า Startup\nของกลุ่มต้องจดทะเบียน\nหรือขออนุญาตอะไรบ้าง"),
+            ("ซ้อมใหญ่ (Dress Rehearsal)", "ซ้อม Pitch แบบเต็มรูปแบบ\nจับเวลาจริง\nก่อนนำเสนอสัปดาห์หน้า"),
+        ],
+        "takeaways": [
+            "ปรับปรุงโครงงานธุรกิจให้พร้อมนำเสนอจริง",
+            "รู้จักรูปแบบการจดทะเบียนธุรกิจและหน่วยงานสนับสนุนภาครัฐ",
+            "เข้าใจกฎระเบียบพื้นฐาน เช่น PDPA และทรัพย์สินทางปัญญา",
+            "ตระหนักถึงจรรยาบรรณผู้ประกอบการในการทำงานจริง",
+        ],
+        "next_week": "นำเสนอโครงงานธุรกิจ (Pitching) และวิจารณ์/ให้ข้อเสนอแนะ",
+    },
+    # ---- WEEK 14 ----
+    {
+        "week": 14,
+        "title_th": "นำเสนอโครงงานธุรกิจ (Pitching) และวิจารณ์/ให้ข้อเสนอแนะ",
+        "title_en": "Final Project Pitching & Peer Critique",
+        "clos": "CLO4: ผลิตสื่อและชิ้นงานนำเสนอแผนธุรกิจโดยใช้เครื่องมือดิจิทัลและปัญญาประดิษฐ์\nCLO5: ทำงานร่วมกับผู้อื่นในกลุ่ม",
+        "method": "ปฏิบัติการ",
+        "media": "ใบงาน\nเครื่องมือต้นแบบ",
+        "slides": [
+            ("วันนำเสนอโครงงานธุรกิจจริง", [
+                "#รูปแบบการนำเสนอ",
+                "แต่ละกลุ่ม Pitch 7-10 นาที + Q&A 5 นาที",
+                "#เกณฑ์การประเมิน (Rubric)",
+                "Problem-Solution Fit, Business Model, การนำเสนอ, ความคิดสร้างสรรค์",
+            ], "วันนี้คือผลรวมของการเรียนรู้ตลอดภาคเรียน — นำเสนอด้วยความมั่นใจ"),
+            ("บทเรียนจาก Startup ที่สำเร็จและล้มเหลว", [
+                "#PayPal Mafia",
+                "ทีมผู้ก่อตั้งที่แตกตัวไปสร้าง Tesla, LinkedIn, YouTube",
+                "#Uber: Growth ที่รวดเร็วแต่มีข้อโต้เถียงด้านกฎระเบียบ",
+                "#บทเรียนจากความล้มเหลว",
+                "ธุรกิจที่ไม่ฟังตลาด หรือหมดเงินก่อนถึง Product-Market Fit",
+            ], "ทุก Pitch วันนี้คือจุดเริ่มต้น ไม่ใช่จุดสิ้นสุดของไอเดีย"),
+            ("การให้และรับ Feedback อย่างสร้างสรรค์", [
+                "#หลักการให้ Feedback (Sandwich Method)",
+                "ชื่นชม → ข้อเสนอแนะ → ให้กำลังใจ",
+                "#การรับ Feedback อย่างมีวุฒิภาวะ",
+                "ฟังโดยไม่ตั้งรับ บันทึกประเด็นสำคัญ",
+                "#นำ Feedback ไปพัฒนาต่อ",
+                "ปรับปรุง Business Plan ฉบับสมบูรณ์ส่งท้ายภาค",
+            ]),
+        ],
+        "activities": [
+            ("Pitching จริง", "แต่ละกลุ่มนำเสนอ\nPitch Deck 7-10 นาที\nต่อหน้าอาจารย์และเพื่อน"),
+            ("Q&A Session", "รับคำถามจาก\nอาจารย์และกลุ่มอื่น\nฝึกตอบอย่างมั่นใจ"),
+            ("ให้ Feedback เพื่อน", "แต่ละคนให้ Feedback\nกลุ่มอื่นอย่างน้อย 1 กลุ่ม\nตามแบบฟอร์มที่กำหนด"),
+        ],
+        "takeaways": [
+            "นำเสนอโครงงานธุรกิจฉบับสมบูรณ์ต่อหน้าผู้ฟังจริง",
+            "ฝึกตอบคำถามและรับมือสถานการณ์เฉพาะหน้า",
+            "เรียนรู้จากกรณีศึกษาความสำเร็จและความล้มเหลวของ Startup จริง",
+            "ให้และรับ Feedback อย่างสร้างสรรค์",
+        ],
+        "next_week": "สะท้อนผลการเรียนรู้ ตั้งเป้าหมายพัฒนาตนเอง และสรุปรายวิชา",
+    },
+    # ---- WEEK 15 ----
+    {
+        "week": 15,
+        "title_th": "สะท้อนผลการเรียนรู้ ตั้งเป้าหมายพัฒนาตนเอง และสรุปรายวิชา",
+        "title_en": "Learning Reflection, Personal Goal Setting & Course Wrap-up",
+        "clos": "CLO6: สะท้อนผลการเรียนรู้และพัฒนาตนเองอย่างต่อเนื่อง",
+        "method": "อภิปราย\nสะท้อนผล",
+        "media": "แบบสะท้อนการเรียนรู้",
+        "slides": [
+            ("ทบทวนเส้นทางการเรียนรู้ตลอดภาคเรียน", [
+                "#จาก Week 1 ถึง Week 14",
+                "จากไอเดียเริ่มต้น สู่แผนธุรกิจและ Pitch Deck ฉบับสมบูรณ์",
+                "#ทักษะที่ได้พัฒนา",
+                "Design Thinking, BMC, Financial Planning, Digital Marketing, Pitching",
+            ], "การเป็นผู้ประกอบการคือการเรียนรู้ตลอดชีวิต ไม่ใช่จบที่วิชานี้"),
+            ("เส้นทางต่อจากนี้สำหรับไอเดียของคุณ", [
+                "#ถ้าอยากทำต่อจริง",
+                "สมัครโครงการบ่มเพาะ (Incubator/Accelerator)",
+                "ทุน NIA, depa, มหาวิทยาลัย",
+                "#ถ้ายังไม่พร้อมทำ Startup ตอนนี้",
+                "นำทักษะผู้ประกอบการไปใช้ในงานประจำ (Intrapreneurship)",
+                "#Community และเครือข่าย",
+                "Startup Thailand, Techsauce, กลุ่ม Founder ท้องถิ่น",
+            ]),
+            ("ตั้งเป้าหมายพัฒนาตนเอง (Personal Action Plan)", [
+                "#สะท้อนตนเอง 3 คำถาม",
+                "ได้เรียนรู้อะไรเกี่ยวกับตัวเองบ้าง?",
+                "จุดแข็ง-จุดที่ต้องพัฒนาในการเป็นผู้ประกอบการ?",
+                "ขั้นตอนต่อไปใน 6 เดือนข้างหน้าคืออะไร?",
+                "#เขียน Personal Action Plan",
+                "เป้าหมาย / ขั้นตอน / Timeline / ผู้สนับสนุน",
+            ], "เริ่มจากก้าวเล็กๆ ที่ทำได้จริงสัปดาห์นี้"),
+        ],
+        "activities": [
+            ("สะท้อนผลกลุ่ม", "อภิปรายกลุ่มย่อย:\nบทเรียนสำคัญที่สุด\nที่ได้จากวิชานี้"),
+            ("เขียน Action Plan", "แต่ละคนเขียน\nPersonal Action Plan\nส่งในแบบสะท้อนการเรียนรู้"),
+            ("ประเมินรายวิชา", "ตอบแบบประเมิน\nรายวิชาและอาจารย์\nเพื่อพัฒนาการสอนต่อไป"),
+        ],
+        "takeaways": [
+            "ทบทวนและเชื่อมโยงความรู้ตลอดภาคเรียนเป็นภาพรวม",
+            "รู้จักเส้นทางต่อยอด เช่น Incubator, ทุนภาครัฐ, Community",
+            "เขียน Personal Action Plan เพื่อพัฒนาตนเองต่อ",
+            "สามารถสรุปและประเมินคุณค่าที่ได้รับจากรายวิชา",
+        ],
+        "next_week": "ขอให้ทุกคนนำความรู้ไปต่อยอดและประสบความสำเร็จในการเป็นผู้ประกอบการ!",
+        "final": True,
+    },
 ]
 
 # =====================================================================
@@ -690,10 +1038,10 @@ for w in weeks:
     add_activity_slide(prs, w["week"], w["activities"])
 
     # Summary slide
-    add_summary_slide(prs, w["week"], w["takeaways"], w["next_week"])
+    add_summary_slide(prs, w["week"], w["takeaways"], w["next_week"], final=w.get("final", False))
 
     filename = os.path.join(out_dir, f"Week{w['week']:02d}_Startup.pptx")
     prs.save(filename)
     print(f"Saved: {filename}")
 
-print("\nDone! All 8 slides created.")
+print("\nDone! All 15 slides created.")

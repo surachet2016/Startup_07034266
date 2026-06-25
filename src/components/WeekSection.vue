@@ -75,8 +75,9 @@ function slideFileName(weekNum) {
       </li>
     </ul>
 
-    <!-- Next week preview -->
-    <p v-if="week.week < 8" class="next-week">สัปดาห์หน้า: <strong>{{ week.next_week }}</strong></p>
+    <!-- Next week preview (or closing message on the final week) -->
+    <p v-if="week.final" class="next-week final-week">🎓 <strong>{{ week.next_week }}</strong></p>
+    <p v-else class="next-week">สัปดาห์หน้า: <strong>{{ week.next_week }}</strong></p>
 
     <!-- Download button -->
     <a
@@ -281,6 +282,12 @@ function slideFileName(weekNum) {
   color: var(--text);
   opacity: 0.6;
   margin: 1rem 0 1.5rem;
+}
+
+.final-week {
+  opacity: 1;
+  color: var(--accent);
+  font-weight: 600;
 }
 
 .download-btn {

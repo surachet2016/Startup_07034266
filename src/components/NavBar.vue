@@ -1,5 +1,5 @@
 <script setup>
-const weekNums = Array.from({ length: 8 }, (_, i) => i + 1)
+const weekNums = Array.from({ length: 15 }, (_, i) => i + 1)
 
 function scrollTo(id) {
   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
